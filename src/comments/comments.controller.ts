@@ -1,9 +1,10 @@
-import { Body, Controller, Delete, Get, Param, Post, Put } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Post, Put, UseGuards } from '@nestjs/common';
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { CommentsModel } from './comments.model';
 import { CommentsService } from './comments.service';
 import { CommentsDto } from './dto/comments.dto';
 import { UpdateCommentDto } from './dto/updateCommentDto';
+import { AuthUserGuard } from './guards/user.guard';
 
 @ApiTags('Комментарии')
 @Controller('comments')
@@ -13,6 +14,7 @@ export class CommentsController {
     }
     @ApiOperation({summary: 'Показать комментарии к фильму по id фильма'})
     @ApiResponse({status: 200, type: CommentsModel})
+    @UseGuards(AuthUserGuard)
     @Get('/:filmId')
     getCommentsByFilmId(@Param('filmId') filmId: number){
         return this.commentsService.getCommentsByFilmId(filmId);
