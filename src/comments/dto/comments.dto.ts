@@ -9,4 +9,8 @@ export class CommentsDto {
 
     @ApiProperty({example: '123', description: 'id фильма к которому оставлен комментарий'})
     readonly filmId: number;
+
+    @ApiProperty({example: '2341', description: 'Уникальный идентификатор комментируемого комментария. Если нет то null'})
+    readonly parentCommentid: number;
+
 }
