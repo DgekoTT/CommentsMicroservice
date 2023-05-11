@@ -10,7 +10,7 @@ import { CommentsService } from './comments/comments.service';
     providers: [],
     imports: [
         ConfigModule.forRoot({
-        envFilePath: `.${process.env.NODE_ENV}.env`
+        envFilePath: `.development.env`
         }),
         SequelizeModule.forRoot({
             dialect: 'postgres',
