@@ -1,8 +1,8 @@
 import { ApiProperty } from "@nestjs/swagger";
 
 export class CommentsDto {
-    @ApiProperty({example: 'user@user.ru', description: 'Уникальный email пользователя'})
-    readonly email: string;
+    @ApiProperty({example: 'Maki', description: 'Уникальное имя пользователя'})
+    displayName?: string;
 
     @ApiProperty({example: 'Какой - то текст', description: 'Комментарий'})
     readonly comment: string;
@@ -11,6 +11,6 @@ export class CommentsDto {
     readonly filmId: number;
 
     @ApiProperty({example: '2341', description: 'Уникальный идентификатор комментируемого комментария. Если нет то null'})
-    readonly parentCommentid: number;
+    readonly parentCommentId: number;
 
 }

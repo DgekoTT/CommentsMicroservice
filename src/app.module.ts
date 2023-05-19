@@ -1,16 +1,16 @@
 import { Module } from '@nestjs/common';
-import { ConfigModule } from '@nestjs/config';
 import { SequelizeModule } from '@nestjs/sequelize';
-import { CommentsModel } from './comments/comments.model';
+import { Comments } from './comments/comments.model';
 import { CommentsModule } from './comments/comments.module';
-import { CommentsService } from './comments/comments.service';
+import {ConfigModule} from "@nestjs/config";
+
 
 @Module({
     controllers: [],
     providers: [],
     imports: [
         ConfigModule.forRoot({
-        envFilePath: `.development.env`
+            envFilePath: `.${process.env.NODE_ENV}.env`
         }),
         SequelizeModule.forRoot({
             dialect: 'postgres',
@@ -19,7 +19,7 @@ import { CommentsService } from './comments/comments.service';
             username: process.env.POSTGRES_USER,
             password: process.env.POSTGRES_PASSWORD,
             database: process.env.POSTGRES_DB,
-            models: [CommentsModel],
+            models: [Comments],
             autoLoadModels: true
           }),
         CommentsModule

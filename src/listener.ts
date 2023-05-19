@@ -3,7 +3,6 @@ import { MicroserviceOptions, Transport } from '@nestjs/microservices';
 import { AppModule } from './app.module';
 
 async function start() {
-  const PORT = process.env.PORT;
   const app = await NestFactory.createMicroservice<MicroserviceOptions>(AppModule, {
     transport: Transport.RMQ,
     options: {
@@ -14,7 +13,8 @@ async function start() {
       },
     },
   });
-  app.listen();
+  await app.listen();
+  console.log("MicroService Comments is listening")
 }
 
 
