@@ -1,5 +1,4 @@
-import {Body, Controller, Delete, Get, Inject, Param, Post, Put, Req, UseGuards} from '@nestjs/common';
-import { ClientProxy } from '@nestjs/microservices';
+import {Body, Controller, Delete, Get, Param, Post, Put, Req, UseGuards} from '@nestjs/common';
 import {ApiCookieAuth, ApiOperation, ApiResponse, ApiTags} from '@nestjs/swagger';
 import { Comments} from './comments.model';
 import { CommentsService } from './comments.service';
