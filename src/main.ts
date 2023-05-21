@@ -7,6 +7,13 @@ async function start() {
   const PORT = process.env.PORT|| 5000;
   const app = await NestFactory.create(AppModule);
 
+  app.enableCors({
+    origin: "*",
+    credentials: true,// отвечает за куки
+    methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
+    preflightContinue: false,
+    optionsSuccessStatus: 200
+  });
   const config = new DocumentBuilder()
     .setTitle('Comments microservice')
     .setDescription('Описание  API комментариев')

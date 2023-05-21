@@ -1,6 +1,6 @@
 import {Body, Controller, Delete, Get, Inject, Param, Post, Put, Req, UseGuards} from '@nestjs/common';
 import { ClientProxy } from '@nestjs/microservices';
-import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
+import {ApiCookieAuth, ApiOperation, ApiResponse, ApiTags} from '@nestjs/swagger';
 import { Comments} from './comments.model';
 import { CommentsService } from './comments.service';
 import { CommentsDto } from './dto/comments.dto';
@@ -24,9 +24,11 @@ export class CommentsController {
         return this.commentsService.getCommentsByFilmId(filmId);
     }
 
+    @ApiCookieAuth()
     @Roles("admin", "user")
     @UseGuards(RolesGuard)
     @ApiOperation({summary: 'Создать комментарий'})
+    @ApiResponse({status: 200, description: 'Успешный запрос, будем делать риерект ?', type: String, isArray: false})
     @Post()
     createComments(@Body() commentsDto: CommentsDto,
                    @Req() request: Request) {
@@ -34,17 +36,21 @@ export class CommentsController {
         return this.commentsService.createComment(commentsDto, refreshToken);
     }
 
+    @ApiCookieAuth()
     @Roles("admin", "user")
     @UseGuards(RolesGuard)
     @ApiOperation({summary: 'Изменить комментарий'})
+    @ApiResponse({status: 200, description: 'Успешный запрос', type: String, isArray: false})
     @Put('/update')
     updateComment(@Body() updateCommentDto: UpdateCommentDto) {
         return this.commentsService.updateComment(updateCommentDto);
     }
 
+    @ApiCookieAuth()
     @Roles("admin", "user")
     @UseGuards(RolesGuard)
     @ApiOperation({summary: 'Удалить комментарий по его id'})
+    @ApiResponse({status: 200, description: 'Успешный запрос', type: String, isArray: false})
     @Delete('/:commentId')
     deleteCommentById(@Param('commentId') commentId: number) {
         return this.commentsService.deleteComment(commentId);
