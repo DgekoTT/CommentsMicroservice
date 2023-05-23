@@ -41,8 +41,10 @@ export class CommentsController {
     @ApiOperation({summary: 'Изменить комментарий'})
     @ApiResponse({status: 200, description: 'Успешный запрос', type: String, isArray: false})
     @Put('/update')
-    updateComment(@Body() updateCommentDto: UpdateCommentDto) {
-        return this.commentsService.updateComment(updateCommentDto);
+    updateComment(@Body() updateCommentDto: UpdateCommentDto,
+                  @Req() request: Request) {
+        const refreshToken= (request as any).cookies.refreshToken
+        return this.commentsService.updateComment(updateCommentDto, refreshToken);
     }
 
     @ApiCookieAuth()
