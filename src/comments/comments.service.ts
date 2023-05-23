@@ -21,7 +21,7 @@ export class CommentsService {
 
     async createComment(dto: CommentsDto, refreshToken: string): Promise<void> {
         const user = this.jwtService.verify(refreshToken, {secret: "FFFGKJKFWMV"});
-        dto.displayName = user.displayName;
+        dto.displayName = user.email;
         await this.commentsRepository.create(dto)
         // redirect на страницу фильма и как раз появиться новый комментарий
     }
