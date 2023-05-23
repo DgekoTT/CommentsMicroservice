@@ -23,11 +23,11 @@ export class Comments extends Model<Comments, CommentsCreationAttrs> {
     @Column({type: DataType.TEXT, allowNull: false})
     comment: string;
 
-    @ApiProperty({example: '123', description: 'id фильма к которому оставлен комментарий'})
+    @ApiProperty({example: 123, description: 'id фильма к которому оставлен комментарий'})
     @Column({type: DataType.INTEGER, allowNull: false})
     filmId: number;
 
-    @ApiProperty({example: '2341', description: 'Уникальный идентификатор комментируемого комментария. Если нет то null'})
+    @ApiProperty({example: 2341, description: 'Уникальный идентификатор комментируемого комментария. Если нет то null'})
     @Column({type: DataType.INTEGER, allowNull: true})
     parentCommentId: number;
 }
