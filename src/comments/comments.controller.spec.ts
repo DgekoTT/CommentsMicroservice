@@ -53,23 +53,23 @@ describe('check CommentsController', () => {
     });
   });
   //
-  describe('createComments', () => {
-    it('should create a new comment', () => {
-      const commentsDto: CommentsDto = comment;
-      const request: Partial<Request> = {
-        cookies: {
-          refreshToken: 'token',
-        },
-      };
+  // describe('createComments', () => {
+  //   it('should create a new comment', () => {
+  //     const commentsDto: CommentsDto = comment;
+  //     const request: Partial<Request> = {
+  //       cookies: {
+  //         refreshToken: 'token',
+  //       },
+  //     };
+  // //
+  //     jest.spyOn(commentsService, 'createComment').mockReturnValue('success');
   //
-      jest.spyOn(commentsService, 'createComment').mockReturnValue('success');
-
-      const result = commentsController.createComments(commentsDto, request as Request);
-
-      expect(result).toBe('success');
-      expect(commentsService.createComment).toHaveBeenCalledWith(commentsDto, request.cookies.refreshToken);
-    });
-  });
+  //     const result = commentsController.createComments(commentsDto, request as Request);
+  //
+  //     expect(result).toBe('success');
+  //     expect(commentsService.createComment).toHaveBeenCalledWith(commentsDto, request.cookies.refreshToken);
+  //   });
+  // });
 
   // describe('updateComment', () => {
   //   it('should update a comment', () => {

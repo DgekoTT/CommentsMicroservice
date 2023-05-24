@@ -23,9 +23,9 @@ export class CommentsController {
         return this.commentsService.getCommentsByFilmId(filmId);
     }
 
-    @ApiCookieAuth()
-    @Roles("admin", "user")
-    @UseGuards(RolesGuard)
+    // @ApiCookieAuth()
+    // @Roles( "user")
+    // @UseGuards(RolesGuard)
     @ApiOperation({summary: 'Создать комментарий'})
     @ApiResponse({status: 200, description: 'Успешный запрос, будем делать риерект ?', type: String, isArray: false})
     @Post()
@@ -47,9 +47,9 @@ export class CommentsController {
         return this.commentsService.updateComment(updateCommentDto, refreshToken);
     }
 
-    @ApiCookieAuth()
-    @Roles("admin", "user")
-    @UseGuards(RolesGuard)
+    // @ApiCookieAuth()
+    // @Roles("admin", "user")
+    // @UseGuards(RolesGuard)
     @ApiOperation({summary: 'Удалить комментарий по его id'})
     @ApiResponse({status: 200, description: 'Успешный запрос', type: String, isArray: false})
     @Delete('/:commentId')

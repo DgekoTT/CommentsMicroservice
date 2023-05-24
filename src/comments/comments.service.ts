@@ -4,6 +4,8 @@ import { Comments } from './comments.model';
 import { CommentsDto } from './dto/comments.dto';
 import { UpdateCommentDto } from './dto/updateCommentDto';
 import {JwtService} from "@nestjs/jwt";
+import {Op} from "sequelize";
+
 
 @Injectable()
 export class CommentsService {
@@ -20,37 +22,39 @@ export class CommentsService {
     }
 
     async createComment(dto: CommentsDto, refreshToken: string): Promise<void> {
-        const user = this.jwtService.verify(refreshToken, {secret: "FFFGKJKFWMV"});
-        dto.displayName = user.displayName;
+        dto.displayName = await this.getInfo(refreshToken).displayName;
         await this.commentsRepository.create(dto)
         // redirect на страницу фильма и как раз появиться новый комментарий
     }
 
     async updateComment(dto: UpdateCommentDto, refreshToken: string) : Promise<void>  {
-        //let comment = await this.commentsRepository.findOne({where: {id: dto.commentId}});
-        const user = this.jwtService.verify(refreshToken, {secret: "FFFGKJKFWMV"});
-        let comment = await this.commentsRepository.findOne({where: {id: dto.commentId}});
-        let isAuthor = await this.commentsRepository.findOne({where: {id: dto.commentId, displayName: user.displayName}})
-        if (!comment) {
-            throw new HttpException('Комментарий не найден', HttpStatus.NOT_FOUND);
-        }
-        if (!isAuthor) {
-            throw new HttpException('Нет доступа', HttpStatus.FORBIDDEN);
-        }
+        const user = this.getInfo(refreshToken);
+        await this.checkAuthComments(user, dto.commentId)
         await this.commentsRepository.update({comment: dto.comment}, {where: {id: dto.commentId}});
     }
 
-    async deleteComment(commentId: number, refreshToken: string) : Promise<void>  {
-        const user = this.jwtService.verify(refreshToken, {secret: "FFFGKJKFWMV"});
-        let comment = await this.commentsRepository.findOne({where: {id: commentId}});
-        let isAuthor = await this.commentsRepository.findOne({where: {id: commentId, displayName: user.displayName}});
-        if(!comment) {
-            throw new HttpException('Комментарий не найден', HttpStatus.NOT_FOUND);
-        } 
-        if (!isAuthor) {
-            throw new HttpException('Нет доступа', HttpStatus.FORBIDDEN);
-        }
-        await this.commentsRepository.destroy({where: {id: commentId}});
+    async deleteComment(commentId: number, refreshToken: string) : Promise<string>  {
+        const user = this.getInfo(refreshToken);
+        await this.checkAuthComments(user, commentId)
+        return (await this.commentsRepository.destroy({where: {id: commentId}})) ? "Комментарий удален" : 'Ошибка'
     }
 
+
+    private getInfo(refreshToken: string) {
+        return this.jwtService.verify(refreshToken, {secret: "FFFGKJKFWMV"});
+    }
+
+
+    private async checkAuthComments(user: any, commentId: number): Promise<void> {
+        const {rows, count}= await this.commentsRepository.findAndCountAll({
+            where: {
+                [Op.or]: [{ id: commentId}, { displayName: user.displayName },]
+            },
+        });
+        if (rows[0].id != commentId) {
+            throw new HttpException('Комментарий не найден', HttpStatus.NOT_FOUND);
+        } else if (rows[0].id && rows[0].displayName != user.displayName) {
+            throw new HttpException('Нет доступа', HttpStatus.FORBIDDEN);
+        }
+    }
 }
