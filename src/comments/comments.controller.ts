@@ -43,7 +43,7 @@ export class CommentsController {
     @Put('/update')
     updateComment(@Body() updateCommentDto: UpdateCommentDto,
                   @Req() request: Request) {
-        const refreshToken = (request as any).cookies.refreshToken
+        const refreshToken = (request as any).cookies.refreshToken;
         return this.commentsService.updateComment(updateCommentDto, refreshToken);
     }
 
@@ -53,7 +53,9 @@ export class CommentsController {
     @ApiOperation({summary: 'Удалить комментарий по его id'})
     @ApiResponse({status: 200, description: 'Успешный запрос', type: String, isArray: false})
     @Delete('/:commentId')
-    deleteCommentById(@Param('commentId') commentId: number) {
-        return this.commentsService.deleteComment(commentId);
+    deleteCommentById(@Param('commentId') commentId: number,
+                      @Req() request: Request) {
+        const refreshToken = (request as any).cookies.refreshToken;             
+        return this.commentsService.deleteComment(commentId, refreshToken);
     }
 }
