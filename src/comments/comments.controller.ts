@@ -43,7 +43,7 @@ export class CommentsController {
     @Put('/update')
     updateComment(@Body() updateCommentDto: UpdateCommentDto,
                   @Req() request: Request) {
-        const refreshToken= (request as any).cookies.refreshToken
+        const refreshToken = (request as any).cookies.refreshToken
         return this.commentsService.updateComment(updateCommentDto, refreshToken);
     }
 

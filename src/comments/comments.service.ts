@@ -21,7 +21,7 @@ export class CommentsService {
 
     async createComment(dto: CommentsDto, refreshToken: string): Promise<void> {
         const user = this.jwtService.verify(refreshToken, {secret: "FFFGKJKFWMV"});
-        dto.displayName = user.email;
+        dto.displayName = user.displayName;
         await this.commentsRepository.create(dto)
         // redirect на страницу фильма и как раз появиться новый комментарий
     }
@@ -30,7 +30,8 @@ export class CommentsService {
         //let comment = await this.commentsRepository.findOne({where: {id: dto.commentId}});
         const user = this.jwtService.verify(refreshToken, {secret: "FFFGKJKFWMV"});
         let comment = await this.commentsRepository.findOne({where: {id: dto.commentId}});
-        let isAuthor = await this.commentsRepository.findOne({where: {id: dto.commentId, displayName: user.email}})
+        console.log(user.displayName);
+        let isAuthor = await this.commentsRepository.findOne({where: {id: dto.commentId, displayName: user.displayName}})
         if (!comment) {
             throw new HttpException('Комментарий не найден', HttpStatus.NOT_FOUND);
         }
