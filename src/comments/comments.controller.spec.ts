@@ -9,6 +9,9 @@ import {JwtService} from "@nestjs/jwt";
 
 describe('check CommentsController', () => {
   let commentsController: CommentsController;
+  let comment = {displayName: 'Peter', comment: 'Какой - то текст',
+      filmId: 1, parentCommentId: 2};
+
   const mockCommentService = {
       getCommentsByFilmId: jest.fn((filmId) => {
           return [{displayName: 'Peter', comment: 'Какой - то текст',
@@ -45,35 +48,29 @@ describe('check CommentsController', () => {
   describe('getCommentsByFilmId', () => {
     it('should return comments for a film by its id', () => {
       expect(commentsController.getCommentsByFilmId(1)).toEqual(
-        [{displayName: 'Peter', comment: 'Какой - то текст',
-          filmId: 1, parentCommentId: 2}]
+        [comment]
       );
     });
   });
   //
-  // describe('createComments', () => {
-  //   it('should create a new comment', () => {
-  //     const commentsDto: CommentsDto = {
-  //       displayName: 'Maki',
-  //       comment: 'Какой-то текст',
-  //       filmId: 123,
-  //       parentCommentId: null,
-  //     };
-  //     const request: Partial<Request> = {
-  //       cookies: {
-  //         refreshToken: 'token',
-  //       },
-  //     };
+  describe('createComments', () => {
+    it('should create a new comment', () => {
+      const commentsDto: CommentsDto = comment;
+      const request: Partial<Request> = {
+        cookies: {
+          refreshToken: 'token',
+        },
+      };
   //
-  //     jest.spyOn(commentsService, 'createComment').mockReturnValue('success');
-  //
-  //     const result = commentsController.createComments(commentsDto, request as Request);
-  //
-  //     expect(result).toBe('success');
-  //     expect(commentsService.createComment).toHaveBeenCalledWith(commentsDto, request.cookies.refreshToken);
-  //   });
-  // });
-  //
+      jest.spyOn(commentsService, 'createComment').mockReturnValue('success');
+
+      const result = commentsController.createComments(commentsDto, request as Request);
+
+      expect(result).toBe('success');
+      expect(commentsService.createComment).toHaveBeenCalledWith(commentsDto, request.cookies.refreshToken);
+    });
+  });
+
   // describe('updateComment', () => {
   //   it('should update a comment', () => {
   //     const updateCommentDto: UpdateCommentDto = {}; // Add update comment DTO here
