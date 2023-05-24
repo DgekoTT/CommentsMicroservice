@@ -26,19 +26,30 @@ export class CommentsService {
         // redirect на страницу фильма и как раз появиться новый комментарий
     }
 
-    async updateComment(dto: UpdateCommentDto) : Promise<void>  {
+    async updateComment(dto: UpdateCommentDto, refreshToken: string) : Promise<void>  {
+        //let comment = await this.commentsRepository.findOne({where: {id: dto.commentId}});
+        const user = this.jwtService.verify(refreshToken, {secret: "FFFGKJKFWMV"});
         let comment = await this.commentsRepository.findOne({where: {id: dto.commentId}});
+        let isAuthor = await this.commentsRepository.findOne({where: {id: dto.commentId, displayName: user.displayName}})
         if (!comment) {
             throw new HttpException('Комментарий не найден', HttpStatus.NOT_FOUND);
+        }
+        if (!isAuthor) {
+            throw new HttpException('Нет доступа', HttpStatus.FORBIDDEN);
         }
         await this.commentsRepository.update({comment: dto.comment}, {where: {id: dto.commentId}});
     }
 
-    async deleteComment(commentId: number) : Promise<void>  {
-        let Comment = await this.commentsRepository.findOne({where: {id: commentId}});
-        if(!Comment) {
+    async deleteComment(commentId: number, refreshToken: string) : Promise<void>  {
+        const user = this.jwtService.verify(refreshToken, {secret: "FFFGKJKFWMV"});
+        let comment = await this.commentsRepository.findOne({where: {id: commentId}});
+        let isAuthor = await this.commentsRepository.findOne({where: {id: commentId, displayName: user.displayName}});
+        if(!comment) {
             throw new HttpException('Комментарий не найден', HttpStatus.NOT_FOUND);
         } 
+        if (!isAuthor) {
+            throw new HttpException('Нет доступа', HttpStatus.FORBIDDEN);
+        }
         await this.commentsRepository.destroy({where: {id: commentId}});
     }
 
