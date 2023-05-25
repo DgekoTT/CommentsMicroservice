@@ -1,6 +1,9 @@
 import { HttpException, HttpStatus } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { CommentsService } from './comments.service';
+import {Test, TestingModule} from "@nestjs/testing";
+import {RolesGuard} from "../Guards/role.guard";
+import {CommentsController} from "./comments.controller";
 
 
 describe('CommentsService', () => {
@@ -8,17 +11,17 @@ describe('CommentsService', () => {
   let jwtService: JwtService;
   let commentsRepository: any;
 
-  beforeEach(() => {
-    commentsRepository = {
-      findAll: jest.fn(),
-      create: jest.fn(),
-      update: jest.fn(),
-      destroy: jest.fn(),
-      findAndCountAll: jest.fn(),
-    };
+  beforeEach(async () => {
+    const module: TestingModule = await Test.createTestingModule({
+      controllers: [CommentsController],
+      providers: [CommentsService],
+    })
+        .overrideGuard(RolesGuard)
+        .useValue({ canActivate: () => true }) // чтобы пропустить проверку на роль
+        .compile();
 
-
-    commentsService = new CommentsService(commentsRepository, jwtService);
+    // controller = module.get<UsersController>(UsersController);
+    // service = module.get<UsersService>(UsersService);
   });
 
   describe('getCommentsByFilmId', () => {
