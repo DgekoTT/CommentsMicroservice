@@ -20,7 +20,7 @@ export class CommentsService {
     }
 
     async createComment(dto: CommentsDto, refreshToken: string): Promise<void> {
-        const user = this.jwtService.verify(refreshToken, {secret: "FFFGKJKFWMV"});
+        const user = this.getInfo(refreshToken);
         dto.displayName = user.displayName;
         await this.commentsRepository.create(dto)
         // redirect на страницу фильма и как раз появиться новый комментарий
@@ -28,7 +28,7 @@ export class CommentsService {
 
     async updateComment(dto: UpdateCommentDto, refreshToken: string) : Promise<void>  {
         //let comment = await this.commentsRepository.findOne({where: {id: dto.commentId}});
-        const user = this.jwtService.verify(refreshToken, {secret: "FFFGKJKFWMV"});
+        const user = this.getInfo(refreshToken);
         let comment = await this.commentsRepository.findOne({where: {id: dto.commentId}});
         if (!comment) {
             throw new HttpException('Комментарий не найден', HttpStatus.NOT_FOUND);
@@ -40,7 +40,7 @@ export class CommentsService {
     }
 
     async deleteComment(commentId: number, refreshToken: string) : Promise<void>  {
-        const user = this.jwtService.verify(refreshToken, {secret: "FFFGKJKFWMV"});
+        const user = this.getInfo(refreshToken);
         let comment = await this.commentsRepository.findOne({where: {id: commentId}});
         if(!comment) {
             throw new HttpException('Комментарий не найден', HttpStatus.NOT_FOUND);
@@ -49,6 +49,10 @@ export class CommentsService {
             throw new HttpException('Нет доступа', HttpStatus.FORBIDDEN);
         }
         await this.commentsRepository.destroy({where: {id: commentId}});
+    }
+
+    private getInfo(refreshToken: string) {
+        return this.jwtService.verify(refreshToken, {secret: "FFFGKJKFWMV"});
     }
 
 }
