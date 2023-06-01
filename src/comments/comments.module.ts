@@ -5,6 +5,7 @@ import { SequelizeModule } from '@nestjs/sequelize';
 import { Comments } from './comments.model';
 import { JwtModule } from '@nestjs/jwt';
 import { ClientsModule, Transport } from '@nestjs/microservices';
+import {CacheModule} from "@nestjs/cache-manager";
 
 @Module({
   providers: [CommentsService],
@@ -25,6 +26,7 @@ import { ClientsModule, Transport } from '@nestjs/microservices';
       //     },
       //   },
       // ]),
+      CacheModule.register()
   ],
   exports: [
     CommentsService

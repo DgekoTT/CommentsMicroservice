@@ -5,6 +5,7 @@ import { CommentsModule } from './comments/comments.module';
 import {ConfigModule} from "@nestjs/config";
 
 
+
 @Module({
     controllers: [],
     providers: [],
@@ -22,7 +23,7 @@ import {ConfigModule} from "@nestjs/config";
             models: [Comments],
             autoLoadModels: true
           }),
-        CommentsModule
+        CommentsModule,
     ]
 })
 export class AppModule {}
