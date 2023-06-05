@@ -1,7 +1,6 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { CommentsService } from './comments.service';
 import { CommentsDto } from './dto/comments.dto';
-import { UpdateCommentDto } from './dto/updateCommentDto';
 import { JwtService } from '@nestjs/jwt';
 import { Comments } from './comments.model';
 import { getModelToken } from '@nestjs/sequelize';

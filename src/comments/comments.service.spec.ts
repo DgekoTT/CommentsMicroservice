@@ -20,8 +20,6 @@ describe('CommentsService', () => {
         .useValue({ canActivate: () => true }) // чтобы пропустить проверку на роль
         .compile();
 
-    // controller = module.get<UsersController>(UsersController);
-    // service = module.get<UsersService>(UsersService);
   });
 
   describe('getCommentsByFilmId', () => {
