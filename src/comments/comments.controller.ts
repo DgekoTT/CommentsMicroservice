@@ -18,7 +18,7 @@ export class CommentsController {
     @ApiOperation({summary: 'Показать комментарии к фильму по id фильма'})
     @ApiResponse({status: 200, type: Comments})
    // @UseGuards(AuthUserGuard)
-    @Get('/:filmId')
+    @Get('filmId/:filmId')
     getCommentsByFilmId(@Param('filmId') filmId: number){
         return this.commentsService.getCommentsByFilmId(filmId);
     }
@@ -52,7 +52,7 @@ export class CommentsController {
     @UseGuards(RolesGuard)
     @ApiOperation({summary: 'Удалить комментарий по его id'})
     @ApiResponse({status: 200, description: 'Успешный запрос', type: String, isArray: false})
-    @Delete('/:commentId')
+    @Delete('comId/:commentId')
     deleteCommentById(@Param('commentId') commentId: number,
                       @Req() request: Request) {
         const refreshToken = (request as any).cookies.refreshToken;             
