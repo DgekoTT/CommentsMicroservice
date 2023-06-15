@@ -29,7 +29,7 @@ export class CommentsController {
     @ApiResponse({status: 200, description: 'Успешный запрос, будем делать риерект ?', type: String, isArray: false})
     @Post()
     createComments(@Body() commentsDto: CommentsDto,
-                   @Req() request: Request) {
+                   @Req() request: Request): Promise<Comments> {
         const refreshToken= (request as any).cookies.refreshToken
         return this.commentsService.createComment(commentsDto, refreshToken);
     }

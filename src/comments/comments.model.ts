@@ -15,7 +15,7 @@ export class Comments extends Model<Comments, CommentsCreationAttrs> {
     @Column({type: DataType.INTEGER, unique: true, autoIncrement: true, primaryKey: true})
     id: number;
     
-    @ApiProperty({example: 'user@user.ru', description: 'Уникальный email пользователя'})
+    @ApiProperty({example: 'Ivan Ivanov', description: 'имя пользователя'})
     @Column({type: DataType.STRING, allowNull: false})
     displayName: string;
 

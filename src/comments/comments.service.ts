@@ -21,10 +21,10 @@ export class CommentsService {
         return filmComments;
     }
 
-    async createComment(dto: CommentsDto, refreshToken: string): Promise<void> {
+    async createComment(dto: CommentsDto, refreshToken: string): Promise<Comments> {
         dto.displayName = await this.getInfo(refreshToken).displayName;
-        await this.commentsRepository.create(dto)
-        // redirect на страницу фильма и как раз появиться новый комментарий
+        return await this.commentsRepository.create(dto)
+
     }
 
     async updateComment(dto: UpdateCommentDto, refreshToken: string) : Promise<void>  {
